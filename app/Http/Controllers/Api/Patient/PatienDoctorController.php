@@ -43,6 +43,8 @@ class PatienDoctorController extends Controller
         if ($validator->fails()) {
             return Message::error($validator->errors()->first(), null);
         }
+
+        return Message::error($request->lat . "-" . $request->lng,null,Message::$DATA_NOT_FIND_EN);
    /*
 
         // chekc if patient login
