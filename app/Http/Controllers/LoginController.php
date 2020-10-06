@@ -21,17 +21,16 @@ class LoginController extends Controller {
                 ], []);
 
         $user = User::where('email', $request->email)->where("password", $request->password)->first();
-        Auth::login($user);
-        
+
         if ($user) {
-            
+            Auth::login($user);
             session(["user"=> $user->id]);
             return Message::redirectTo("home", Message::$WELCOME . $user->name, 1);
         } else {
             return Message::redirectTo("login", Message::$LOGIN_ERROR, 0);
         }
     }
-    
+
     public function logout() {
         Auth::logout();
         session(["user" => null]);
