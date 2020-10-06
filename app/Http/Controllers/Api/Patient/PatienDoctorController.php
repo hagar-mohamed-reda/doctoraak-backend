@@ -44,7 +44,7 @@ class PatienDoctorController extends Controller
             return Message::error($validator->errors()->first(), null);
         }
 
-        //return Message::error($request->insurance,null,Message::$DATA_NOT_FIND_EN);
+        return Message::error($request->patient_id,null,Message::$DATA_NOT_FIND_EN);
 
 
         // chekc if patient login
