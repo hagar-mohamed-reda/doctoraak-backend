@@ -44,13 +44,13 @@ class PatienDoctorController extends Controller
             return Message::error($validator->errors()->first(), null);
         }
 
-        return Message::error($request->lat . "-" . $request->lng,null,Message::$DATA_NOT_FIND_EN);
-   /*
+        //return Message::error($request->lat . "-" . $request->lng,null,Message::$DATA_NOT_FIND_EN);
+
 
         // chekc if patient login
         if (Patient::where("api_token", $request->api_token)->where("id", $request->patient_id)->count() <= 0)
             return Message::error(Message::$API_LOGIN,null,Message::$API_LOGIN_EN);
-   */
+
         try {
             $resault = [];
             $patient = Patient::find($request->patient_id);
@@ -160,12 +160,12 @@ class PatienDoctorController extends Controller
 
         foreach ($clinics as $clinic) {
             // calculate distance between current lng lat and clinci lng lat
-            $distance = Helper::latLangDistance($lat, $lng, $clinic->latt, $clinic->lang);
+            $distance = Helper::latLangDistance($lat, $lng, $clinic->lat, $clinic->lng);
 
             //
             $clinic->distance = $distance;
 
-            if (($distance <= $km) && ($clinic->doctor->specialization_id ==  $specialization))
+            if (($distance <= $km) && (optional($clinic->doctor)->specialization_id ==  $specialization))
                 $nearestClinics[] = $clinic;
         }
 
