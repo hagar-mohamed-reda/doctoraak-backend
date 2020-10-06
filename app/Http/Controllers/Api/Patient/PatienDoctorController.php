@@ -108,6 +108,7 @@ class PatienDoctorController extends Controller
      */
     public function insuranceClinicFilter($clinics, $insurance)
     {
+        return $clinics;
         $filteredClinics = [];
         foreach ($clinics as $clinic) {
             $count = 0;
