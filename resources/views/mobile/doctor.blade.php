@@ -197,7 +197,7 @@
                 ?>
                 @foreach($clinic->getChartData() as $key => $value)
 
-                <li class="transition wow {{ $flag == 1? 'w3-animate-left' : 'w3-animate-right' }}" >
+                <li class="transition wow {{ $flag == 1? 'w3-animate-top' : 'w3-animate-bottom' }}" >
                     <div class="w3-white w3-padding z-depth-1 w3-display-container" >
                         <i class="fa fa-calendar w3-large w3-margin-right w3-text-indigo" ></i>
                         {{ $key }}
