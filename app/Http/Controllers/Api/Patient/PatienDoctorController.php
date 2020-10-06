@@ -48,8 +48,8 @@ class PatienDoctorController extends Controller
 
 
         // chekc if patient login
-        if (Patient::where("api_token", $request->api_token)->where("id", $request->patient_id)->count() <= 0)
-            return Message::error(Message::$API_LOGIN,null,Message::$API_LOGIN_EN);
+        //if (Patient::where("api_token", $request->api_token)->where("id", $request->patient_id)->count() <= 0)
+        //    return Message::error(Message::$API_LOGIN,null,Message::$API_LOGIN_EN);
 
         try {
             $resault = [];
