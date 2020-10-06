@@ -94,7 +94,7 @@ class PatienDoctorController extends Controller
 
             return Message::success($messsage, Helper::jsonFilter($resault),$messsage_en);
         } catch (\Exception $exc) {
-            return Message::error(Message::$ERROR, $exc->getMessage() , null,Message::$ERROR_EN);
+            return Message::error($exc->getMessage(), $exc->getMessage() , null,Message::$ERROR_EN);
         }
     }
 
@@ -110,7 +110,7 @@ class PatienDoctorController extends Controller
     {
         $filteredClinics = [];
         foreach ($clinics as $clinic) {
-            if (optional(optional($clinic->doctor)->doctor_insurances)->where("insurance_id", $insurance)->count() > 0) {
+            if (optional($clinic->doctor)->doctor_insurances()->where("insurance_id", $insurance)->count() > 0) {
                 $filteredClinics[] = $clinic;
             }
         }
