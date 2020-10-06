@@ -54,8 +54,8 @@ class PatienDoctorController extends Controller
             $patient = Patient::find($request->patient_id);
 
             // search with city and area if exist
-            if ($request->has("city_id") && $request->has("city_id")) { 
-                      
+            if ($request->has("city_id") && $request->has("city_id")) {
+
             $resault = Clinic::select('*', DB::raw('clinics.id AS id'))
                     ->where("specialization_id", $request->specialization_id)
                     ->where("city_id", $request->city_id)
@@ -64,19 +64,19 @@ class PatienDoctorController extends Controller
                    ->leftJoin('doctors', function($join) {
                    $join->on('clinics.doctor_id', '=', 'doctors.id');
                      })->get();
-                   
+
             }
-            
-            if ($request->has("latt") && $request->has("lang")) { 
+
+            if ($request->has("lat") && $request->has("lng")) {
                 // search with lng lat if exist
-                $resault = $this->searchNearstClinics($request->lang, $request->latt, $request->specialization_id);
+                $resault = $this->searchNearstClinics($request->lng, $request->lat, $request->specialization_id);
             }
 
             // fitler the resault with insurance id
             if ($request->insurance == 1 && $patient->insurance_id) {
                 $resault = $this->insuranceClinicFilter($resault, $patient->insurance_id);
             }
-            
+
             // fitler with medical center if exist
             if ($request->is_medical_center != null && $request->is_medical_center == 1) {
                 $resault = $this->medicalCenterFilter($resault);
@@ -89,9 +89,9 @@ class PatienDoctorController extends Controller
             // build return message
             $messsage = str_replace("n", count($resault), Message::$CLINIC_SEARCH);
             $messsage_en = str_replace("x", count($resault), Message::$CLINIC_SEARCH_EN);
- 
+
             return Message::success($messsage, Helper::jsonFilter($resault),$messsage_en);
-        } catch (Exception $exc) {
+        } catch (\Exception $exc) {
             return Message::error(Message::$ERROR, $exc->getMessage() , null,Message::$ERROR_EN);
         }
     }
@@ -108,7 +108,7 @@ class PatienDoctorController extends Controller
     {
         $filteredClinics = [];
         foreach ($clinics as $clinic) {
-            if ($clinic->doctor->doctor_insurances->where("insurance_id", $insurance)->count() > 0) {
+            if (optional(optional($clinic->doctor)->doctor_insurances)->where("insurance_id", $insurance)->count() > 0) {
                 $filteredClinics[] = $clinic;
             }
         }
@@ -129,7 +129,7 @@ class PatienDoctorController extends Controller
         $filteredClinics = [];
         foreach ($clinics as $clinic) {
             if ($clinic->doctor) {
-                if ($clinic->doctor->is_medical_center == 1) {
+                if (optional($clinic->doctor)->is_medical_center == 1) {
                     $filteredClinics[] = $clinic;
                 }
             }
@@ -137,7 +137,7 @@ class PatienDoctorController extends Controller
 
         return $filteredClinics;
     }
-    
+
 
     /**
      * search on nearst clinic with specail distance
@@ -155,7 +155,7 @@ class PatienDoctorController extends Controller
             $km = $newkm;
         $nearestClinics = [];
         $clinics = Clinic::all();
-                  
+
         foreach ($clinics as $clinic) {
             // calculate distance between current lng lat and clinci lng lat
             $distance = Helper::latLangDistance($lat, $lng, $clinic->latt, $clinic->lang);
@@ -204,7 +204,7 @@ class PatienDoctorController extends Controller
         // chekc if patient login
         if (Patient::where("api_token", $request->api_token)->where("id", $request->patient_id)->count() <= 0)
             return Message::error(Message::$API_LOGIN,null,Message::$API_LOGIN_EN);
-            
+
 
         // check on the request date if < today date
         if (strtotime($request->date) < strtotime(date("Y-m-d")))
@@ -223,9 +223,9 @@ class PatienDoctorController extends Controller
             $clinicOrder->active = "1";
 
             $clinicOrder->save();
-            
+
            }, $request);
-          
+
     }
 
     /**
@@ -292,7 +292,7 @@ class PatienDoctorController extends Controller
             $city_en = optional($clinic->city)->name;
             $area_ar = optional($clinic->area)->name_ar;
             $area_en = optional($clinic->area)->name;
-            
+
             // build return message
             $messsage = str_replace("patient", Patient::find($request->patient_id)->name, Message::$CLINIC_RESERVATION);
             $messsage = str_replace("doctor", $clinic->doctor->name, $messsage);
@@ -302,9 +302,9 @@ class PatienDoctorController extends Controller
             $messsage = str_replace("phone", $clinic->phone, $messsage);
             $messsage = str_replace("city", $city_ar, $messsage);
             $messsage = str_replace("area", $area_ar, $messsage);
-          
-            
-            
+
+
+
             $messsage_en = str_replace("{patient}", Patient::find($request->patient_id)->name, Message::$CLINIC_RESERVATION_EN);
             $messsage_en = str_replace("{doctor}", $clinic->doctor->name, $messsage_en);
             $messsage_en = str_replace("{time}", $data["reservation_time"], $messsage_en);
@@ -313,26 +313,26 @@ class PatienDoctorController extends Controller
             $messsage_en = str_replace("{phones}", $clinic->phone, $messsage_en);
             $messsage_en = str_replace("{citys}", $city_en, $messsage_en);
             $messsage_en = str_replace("{areas}", $area_en, $messsage_en);
-          
-            
+
+
             /////notification to patients /////////////////////////
             $title_ar = "بيانات الحجز الخاص بك ".Patient::find($request->patient_id)->name;
             $title_en = "your reservation details ".Patient::find($request->patient_id)->name;
-            
+
             $icon = "";
             $id = ClinicOrder::query()->latest('created_at')->first()? ClinicOrder::query()->latest('created_at')->first()->id : null;
             Patient::notify($title_ar,  $title_en,$messsage,  $messsage_en, $icon,$request->patient_id, $id, "DOCTOR");
-        
-        
-            //////////////////////  notification to doctor/////////////////////////// 
+
+
+            //////////////////////  notification to doctor///////////////////////////
             $doctor = (ClinicOrder::query()->latest('created_at')->first()->clinic->doctor)? ClinicOrder::query()->latest('created_at')->first()->clinic->doctor->id : null; //Clinic::find($request->clinic_id)->doctor->id;
              $message_ar_d ="لقد قام   ".Patient::find($request->patient_id)->name." بالحجز لديك و رقم هانفه " .Patient::find($request->patient_id)->phone;
             $message_en_d = "you have new book from ". Patient::find($request->patient_id)->name . "has phone number is" . Patient::find($request->patient_id)->phone ;
-          
+
             $title_ar_d = "بيانات الحجز ";
             $title_en_d = "Reservation details";
             Doctor::notify($title_ar_d,  $title_en_d,$message_ar_d, $message_en_d, $icon,$doctor, $id);
-        
+
 
             return Message::success($messsage, null,$messsage_en);
         } catch (\Exception $exc) {
@@ -365,7 +365,7 @@ class PatienDoctorController extends Controller
             return Message::error(Message::$API_LOGIN,null,Message::$API_LOGIN_EN);
 
         // chekc if patient rate this doctor
-        
+
         if (PatientRate::where("patient_id", $request->patient_id)->where("type", "PATIENT")->where("doctor_id", $request->doctor_id)->count() > 0)
             return Message::error(Message::$DOCTOR_RATE_ERROR,null,Message::$DOCTOR_RATE_ERROR_EN);
 
@@ -442,13 +442,13 @@ class PatienDoctorController extends Controller
             $patient = Patient::where("api_token", $request->api_token)->where("id", $request->patient_id)->first();
             $doctors = $patient->favourites()->pluck("doctor_id");
             //return $doctors;
-            $resault = Clinic::whereIn("doctor_id", $doctors)->get(); 
+            $resault = Clinic::whereIn("doctor_id", $doctors)->get();
             return Message::success("",  Helper::jsonFilter($resault),"");
         } catch (\Exception $exc) {
             return Message::error(Message::$ERROR, null,Message::$ERROR_EN);
         }
     }
-    
+
     public function getReservations(Request $request)
     {
         $validator = validator()->make($request->all(), [
@@ -467,7 +467,7 @@ class PatienDoctorController extends Controller
         try {
             $date = strtotime(date("Y-m-d"));
             $yesterday = date("Y-m-d", strtotime('-1 day', $date));
-            
+
             $orders = ClinicOrder::where("active", "1")
                 ->where("patient_id", $request->patient_id)
                 ->where("date", ">=", $yesterday)
@@ -475,9 +475,9 @@ class PatienDoctorController extends Controller
                 ->get();
                   $messsage = str_replace("n", count($orders), Message::$RESERVATION_FOR_PATIENT);
                   $messsage_en = str_replace("x", count($orders), Message::$RESERVATION_FOR_PATIENT_EN);
-                 
+
                    return Message::success($messsage, Helper::jsonFilter($orders), $messsage_en);
-               
+
         } catch (\Exception $exc) {
             return Message::error(Message::$ERROR, null,Message::$ERROR_EN);
         }
