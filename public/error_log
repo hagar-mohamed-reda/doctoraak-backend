@@ -1,0 +1,2 @@
+[08-Sep-2020 16:50:53 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 20480 bytes) in /home3/sphinxa1/public_html/v2/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/GuardsAttributes.php on line 188
+[08-Sep-2020 16:50:53 UTC] PHP Fatal error:  Allowed memory size of 268435456 bytes exhausted (tried to allocate 32768 bytes) in /home3/sphinxa1/public_html/v2/vendor/symfony/debug/Exception/FatalErrorException.php on line 1

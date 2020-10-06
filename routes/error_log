@@ -1,0 +1,24 @@
+[26-Apr-2020 21:11:22 America/Boise] PHP Fatal error:  Uncaught Error: Class 'Route' not found in /home3/sphinxa1/public_html/doctoraak/routes/api.php:16
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/routes/api.php on line 16
+[26-Apr-2020 21:11:23 America/Boise] PHP Fatal error:  Uncaught Error: Class 'Broadcast' not found in /home3/sphinxa1/public_html/doctoraak/routes/channels.php:14
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/routes/channels.php on line 14
+[26-Apr-2020 21:11:23 America/Boise] PHP Fatal error:  Uncaught Error: Class 'Artisan' not found in /home3/sphinxa1/public_html/doctoraak/routes/console.php:16
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/routes/console.php on line 16
+[26-Apr-2020 21:11:23 America/Boise] PHP Fatal error:  Uncaught Error: Class 'Route' not found in /home3/sphinxa1/public_html/doctoraak/routes/web.php:15
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/routes/web.php on line 15
+[16-May-2020 20:39:20 America/Boise] PHP Fatal error:  Uncaught Error: Class 'Route' not found in /home3/sphinxa1/public_html/doctoraak/routes/api.php:16
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/routes/api.php on line 16
+[18-May-2020 03:24:24 America/Boise] PHP Fatal error:  Uncaught Error: Class 'Route' not found in /home3/sphinxa1/public_html/doctoraak/routes/web.php:15
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/routes/web.php on line 15

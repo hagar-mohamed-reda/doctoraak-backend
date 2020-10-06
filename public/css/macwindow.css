@@ -1,0 +1,160 @@
+
+
+.mac-window {
+  border-radius: 5px;
+  max-height: 100%;
+  height: 80%;
+  max-width: 100%;
+  min-width: 400px;
+  width: 50%;
+  box-shadow: 0 15px 20px rgba(0, 0, 0, 0.25);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateY(-50%) translateX(-50%) scale(0);
+          transform: translateY(-50%) translateX(-50%) scale(0);
+  display: none;
+  transition: all 0.25s;
+}
+.mac-window.active {
+  display: block;
+  -webkit-transform: translateY(-50%) translateX(-50%) scale(1);
+          transform: translateY(-50%) translateX(-50%) scale(1);
+}
+.mac-window.minimize {
+  top: 125%;
+  -webkit-transform: translateY(-50%) translateX(-50%) scale(1);
+          transform: translateY(-50%) translateX(-50%) scale(1);
+  opacity: 1;
+  transition: all 0.5s;
+}
+.mac-window.minimize:hover {
+  top: 120%;
+  transition: all 0.5s;
+}
+.mac-window.maximize {
+  min-height: 100%;
+  min-width: 100%;
+  right: 0px;
+  bottom: 0px;
+  position: absolute;
+  -webkit-transform: translateY(-50%) translateX(-50%) scale(1);
+          transform: translateY(-50%) translateX(-50%) scale(1);
+}
+.mac-window .title-bar {/*
+border-top-left-radius: 5px;
+border-top-right-radius: 5px;*/
+  background: lightgray; 
+  height: 5%;
+  border-bottom: 1px solid #b4b4b4;
+  width: 100%;
+  overflow: auto;
+  clear: both;
+}
+.mac-window .title-bar .buttons {
+  height: 100%;
+  width: 51px;
+  float: left;
+  margin-left: 9px;
+}
+.mac-window .title-bar .buttons .close, .mac-window .title-bar .buttons .minimize, .mac-window .title-bar .buttons .maximize {
+  float: left;
+  height: 13px;
+  width: 13px;
+  /*border-radius: 50%;*/
+  margin-top: 5px;
+  background: #fb4948;
+  border: solid 1px rgba(214, 46, 48, 0.15);
+  position: relative;
+}
+.mac-window .title-bar .buttons .close:before, .mac-window .title-bar .buttons .minimize:before, .mac-window .title-bar .buttons .maximize:before {
+  content: '';
+  position: absolute;
+  height: 1px;
+  width: 8px;
+  background: #360000;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateY(-50%) translateX(-50%) rotate(45deg);
+          transform: translateY(-50%) translateX(-50%) rotate(45deg);
+  opacity: 1;
+}
+.mac-window .title-bar .buttons .close:after, .mac-window .title-bar .buttons .minimize:after, .mac-window .title-bar .buttons .maximize:after {
+  content: '';
+  position: absolute;
+  height: 1px;
+  width: 8px;
+  background: #360000;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateY(-50%) translateX(-50%) rotate(-45deg);
+          transform: translateY(-50%) translateX(-50%) rotate(-45deg);
+  opacity: 1;
+}
+.mac-window .title-bar .buttons .minimize {
+  background: #fdb225;
+  margin-left: 8.5px;
+  border-color: rgba(213, 142, 27, 0.15);
+  position: relative;
+}
+.mac-window .title-bar .buttons .minimize:before {
+  content: '';
+  position: absolute;
+  height: 1px;
+  width: 8px;
+  background: #864502;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateY(-50%) translateX(-50%);
+          transform: translateY(-50%) translateX(-50%);
+}
+.mac-window .title-bar .buttons .minimize:after {
+  display: none;
+}
+.mac-window .title-bar .buttons .maximize {
+  float: right;
+  background: #2ac833;
+  border-color: rgba(30, 159, 32, 0.15);
+}
+.mac-window .title-bar .buttons .maximize:before {
+  width: 6px;
+  height: 6px;
+  background: #0b5401;
+  -webkit-transform: translateY(-50%) translateX(-50%);
+          transform: translateY(-50%) translateX(-50%);
+  border: solid #2ac833 1px;
+  border-radius: 2px;
+}
+.mac-window .title-bar .buttons .maximize:after {
+  width: 10px;
+  height: 2px;
+  background: #2ac833;
+  -webkit-transform: translateY(-50%) translateX(-50%) rotate(45deg);
+          transform: translateY(-50%) translateX(-50%) rotate(45deg);
+}
+.mac-window .title-bar .buttons:hover .close:before, .mac-window .title-bar .buttons:hover .minimize:before, .mac-window .title-bar .buttons:hover .maximize:before {
+  opacity: 1;
+}
+.mac-window .title-bar .buttons:hover .close:after, .mac-window .title-bar .buttons:hover .minimize:after, .mac-window .title-bar .buttons:hover .maximize:after {
+  opacity: 1;
+}
+.mac-window .title-bar .title {
+  overflow: auto;
+  height: 100%;
+  text-align: center;
+  margin-right: 60px;
+  font-family: inherit;
+  line-height: 21px;
+  font-size: 13px;
+  font-weight: light;
+  color: #222022;
+}
+
+.mac-window .window {
+  background: white;
+  width: 100%;
+  border: none;
+  overflow-y: scroll;
+  height: 95%;
+}
+

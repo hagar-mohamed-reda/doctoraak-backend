@@ -1,0 +1,76 @@
+[26-Apr-2020 21:11:27 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home3/sphinxa1/public_html/doctoraak/config/filesystems.php:16
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/config/filesystems.php on line 16
+[26-Apr-2020 21:11:27 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home3/sphinxa1/public_html/doctoraak/config/hashing.php:32
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/config/hashing.php on line 32
+[26-Apr-2020 21:11:28 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home3/sphinxa1/public_html/doctoraak/config/mail.php:19
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/config/mail.php on line 19
+[26-Apr-2020 21:11:28 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home3/sphinxa1/public_html/doctoraak/config/session.php:21
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/config/session.php on line 21
+[26-Apr-2020 21:11:28 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home3/sphinxa1/public_html/doctoraak/config/app.php:16
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/config/app.php on line 16
+[26-Apr-2020 21:11:29 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home3/sphinxa1/public_html/doctoraak/config/services.php:18
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/config/services.php on line 18
+[26-Apr-2020 21:11:29 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home3/sphinxa1/public_html/doctoraak/config/database.php:18
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/config/database.php on line 18
+[26-Apr-2020 21:11:30 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home3/sphinxa1/public_html/doctoraak/config/logging.php:19
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/config/logging.php on line 19
+[26-Apr-2020 21:11:30 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home3/sphinxa1/public_html/doctoraak/config/cache.php:21
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/config/cache.php on line 21
+[26-Apr-2020 21:11:30 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home3/sphinxa1/public_html/doctoraak/config/queue.php:16
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/config/queue.php on line 16
+[26-Apr-2020 21:11:31 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function resource_path() in /home3/sphinxa1/public_html/doctoraak/config/view.php:17
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/config/view.php on line 17
+[26-Apr-2020 21:11:31 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home3/sphinxa1/public_html/doctoraak/config/broadcasting.php:18
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/config/broadcasting.php on line 18
+[27-Apr-2020 05:21:29 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home3/sphinxa1/public_html/doctoraak/config/app.php:16
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/config/app.php on line 16
+[17-May-2020 07:28:46 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home3/sphinxa1/public_html/doctoraak/config/filesystems.php:16
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/config/filesystems.php on line 16
+[18-May-2020 05:14:19 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home3/sphinxa1/public_html/doctoraak/config/database.php:18
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/config/database.php on line 18
+[19-May-2020 11:32:55 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function resource_path() in /home3/sphinxa1/public_html/doctoraak/config/view.php:17
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/config/view.php on line 17
+[01-Jul-2020 22:14:35 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function resource_path() in /home3/sphinxa1/public_html/doctoraak/config/view.php:17
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/config/view.php on line 17
+[11-Jul-2020 23:59:37 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home3/sphinxa1/public_html/doctoraak/config/app.php:16
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/config/app.php on line 16
+[12-Jul-2020 00:47:05 America/Boise] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home3/sphinxa1/public_html/doctoraak/config/mail.php:19
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/config/mail.php on line 19

@@ -1,0 +1,8 @@
+[26-Apr-2020 21:11:06 America/Boise] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Foundation\Application' not found in /home3/sphinxa1/public_html/doctoraak/bootstrap/app.php:14
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/bootstrap/app.php on line 14
+[18-May-2020 06:54:04 America/Boise] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Foundation\Application' not found in /home3/sphinxa1/public_html/doctoraak/bootstrap/app.php:14
+Stack trace:
+#0 {main}
+  thrown in /home3/sphinxa1/public_html/doctoraak/bootstrap/app.php on line 14
