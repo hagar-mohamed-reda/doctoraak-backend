@@ -27,7 +27,7 @@ class LabController extends Controller
      *
      * @return ajax data
      */
-    public function getData() { 
+    public function getData() {
         $query = Lab::query();
 
         if (strlen(request()->search_string) > 0) {
@@ -83,7 +83,7 @@ class LabController extends Controller
                         })
                         ->addColumn('address', function(Lab $lab) {
                             return optional($lab->city)->name . "-" . optional($lab->area)->name;
-                        }) 
+                        })
                         ->addColumn('insurance', function(Lab $lab) {
                             return implode(", ", $lab->insuranceNames());
                         })
@@ -268,8 +268,8 @@ class LabController extends Controller
     public function updateWorkingHours(Request $request, Lab $lab) {
         try {
             $lab->working_hours()->delete();
-            
-            for($index = 0; $index < count($request->day); $index ++) { 
+
+            for($index = 0; $index < count($request->day); $index ++) {
                 $working = LabWorkingHours::create([
                     "lab_id" => $lab->id,
                     "day" => $request->day[$index],
@@ -277,8 +277,8 @@ class LabController extends Controller
                     "part_to" => $request->part_to[$index],
                     "active" => $request->active[$index],
                 ]);
-                
-                
+
+
             }
             return Message::success(Message::$DONE);
         } catch (\Exception $e) {
@@ -331,13 +331,12 @@ class LabController extends Controller
             return Message::error(Message::$PHONE_UNIQUE, null, Message::$PHONE_UNIQUE_EN);
 
         try {
-            $lab->update($request->all());
+            $data = $request->all();
 
             if ($lab->password != $request->password)
-                $lab->update([
-                    'password' => bcrypt($request->password)
-                ]);
+                $data['password'] = bcrypt($request->password);
 
+            $lab->update($request->all());
 
             if ($request->hasFile('photo')) {
                 $lab->photo = Helper::uploadImg($request->file("photo"), "/lab/");
