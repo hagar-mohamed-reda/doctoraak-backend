@@ -44,7 +44,7 @@ class PatienDoctorController extends Controller
             return Message::error($validator->errors()->first(), null);
         }
 
-        return Message::error($request->patient_id,null,Message::$DATA_NOT_FIND_EN);
+        //return Message::error($request->patient_id,null,Message::$DATA_NOT_FIND_EN);
 
 
         // chekc if patient login
@@ -108,7 +108,6 @@ class PatienDoctorController extends Controller
      */
     public function insuranceClinicFilter($clinics, $insurance)
     {
-        return $clinics;
         $filteredClinics = [];
         foreach ($clinics as $clinic) {
             $count = 0;
