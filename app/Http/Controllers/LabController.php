@@ -336,7 +336,7 @@ class LabController extends Controller
             if ($lab->password != $request->password)
                 $data['password'] = bcrypt($request->password);
 
-            $lab->update($request->all());
+            $lab->update($data);
 
             if ($request->hasFile('photo')) {
                 $lab->photo = Helper::uploadImg($request->file("photo"), "/lab/");
