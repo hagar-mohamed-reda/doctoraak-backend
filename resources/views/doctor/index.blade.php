@@ -4,7 +4,7 @@
 @section("breadcrumb")
 <div class="w3-padding" style="padding-bottom: 0px" >
     <ol class="breadcrumb shadow w3-round w3-white">
-        <li><a href="#" onclick="showPage('dashboard')" >{{ __('dashboard') }}</a></li>  
+        <li><a href="#" onclick="showPage('dashboard')" >{{ __('dashboard') }}</a></li>
         <li class="active">{{  __('doctors') }}</li>
     </ol>
 </div>
@@ -12,12 +12,12 @@
     <div class="box box-widget "  id="filter" >
         <div class="box-header with-border">
 
-            <div class="user-block w3-left"> 
+            <div class="user-block w3-left">
                 <span class="username"><i class="fa fa-filter" ></i> {{ __('filter') }}</span>
             </div>
 
             <!-- /.user-block -->
-            <div class="box-tools"> 
+            <div class="box-tools">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                     <div class="ripple-container"></div>
                 </button>
@@ -29,11 +29,11 @@
         <div class="box-body" >
             <br>
             <div class="w3-row" >
-                <div class="w3-col l3 m4 s6 w3-padding" > 
+                <div class="w3-col l3 m4 s6 w3-padding" >
                     <label>{{ __('search with doctor info') }}</label>
-                    <input type="search" class="form-control"  v-model="filter.search_string"  > 
+                    <input type="search" class="form-control"  v-model="filter.search_string"  >
                 </div>
-                <div class="w3-col l3 m4 s6 w3-padding" > 
+                <div class="w3-col l3 m4 s6 w3-padding" >
                     <label>{{ __('specialization') }}</label>
                     <select class="form-control" v-model="filter.specialization_id"  >
                         <!--
@@ -44,7 +44,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="w3-col l3 m4 s6 w3-padding" > 
+                <div class="w3-col l3 m4 s6 w3-padding" >
                     <label>{{ __('degree') }}</label>
                     <select class="form-control" v-model="filter.degree_id"  >
                         @foreach(App\Degree::all() as $item)
@@ -54,35 +54,35 @@
                 </div>
                 <div class="w3-col l3 m4 s6 w3-padding" >
                     <label>{{ __('gender') }}</label>
-                    <select class="form-control" has-select2="off" v-model="filter.gender"  > 
+                    <select class="form-control" has-select2="off" v-model="filter.gender"  >
                         <option value="male"  >{{ __('male') }}</option>
                         <option value="female"  >{{ __('female') }}</option>
                     </select>
                 </div>
                 <div class="w3-col l3 m4 s6 w3-padding" >
                     <label>{{ __('active') }}</label>
-                    <select class="form-control" has-select2="off" v-model="filter.active"  > 
+                    <select class="form-control" has-select2="off" v-model="filter.active"  >
                         <option value="1"  >{{ __('active') }}</option>
                         <option value="2"  >{{ __('not active') }}</option>
                     </select>
-                </div> 
-                <div class="w3-col l3 m4 s6 w3-padding" >  
-                    <label for="rate">{{ __('reservation_rate') }}</label>  
+                </div>
+                <div class="w3-col l3 m4 s6 w3-padding" >
+                    <label for="rate">{{ __('reservation_rate') }}</label>
                     <input type="hidden" name="rate" id="reservation_rate">
                     <div class="" id="filterRate">
-                    
-                    </div>  
+
+                    </div>
                 </div>
-                <div class="w3-col l3 m4 s6 w3-padding" >  
-                    <label for="rate">{{ __('degree_date') }}</label>  
+                <div class="w3-col l3 m4 s6 w3-padding" >
+                    <label for="rate">{{ __('degree_date') }}</label>
                     <input type="hidden" name="rate" id="degree_rate">
                     <div class="" id="filterRate1">
-                    
-                    </div>  
+
+                    </div>
                 </div>
 
                 <div class="w3-col l3 m4 s6 w3-padding" >
-                    <label> </label> 
+                    <label> </label>
                     <br>
                     <button class="btn btn-success btn-flat" onclick="search()" >{{ __('search') }}</button>
                     <button class="btn btn-warning btn-flat" onclick="showAll()" >{{ __('show all') }}</button>
@@ -90,7 +90,7 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
 @endsection
 
 @php
@@ -98,29 +98,29 @@ $builder = (new App\Doctor)->getViewBuilder();
 @endphp
 
 
-@section("boxHeader")  
+@section("boxHeader")
 <button class="btn btn-primary btn-flat modal-trigger"
         data-toggle="modal"
-        data-target="#addModal"  >{{ __('add doctor') }}</button> 
+        data-target="#addModal"  >{{ __('add doctor') }}</button>
 @endsection
 
 @section("content")
 
-@section("content") 
+@section("content")
 
 <table class="table" id="table" >
     <thead>
-        <tr class="w3-dark-gray" > 
-            <th></th> 
-            <th>{{ __('name') }}</th> 
-            <th>{{ __('phone') }}</th> 
-            <th>{{ __('active') }}</th> 
-            <th>{{ __('specialization') }}</th> 
-            <th>{{ __('degree') }}</th> 
+        <tr class="w3-dark-gray" >
+            <th></th>
+            <th>{{ __('name') }}</th>
+            <th>{{ __('phone') }}</th>
+            <th>{{ __('active') }}</th>
+            <th>{{ __('specialization') }}</th>
+            <th>{{ __('degree') }}</th>
             <th></th>
         </tr>
     </thead>
-    <tbody> 
+    <tbody>
     </tbody>
 </table>
 @endsection
@@ -164,11 +164,11 @@ $builder = (new App\Doctor)->getViewBuilder();
     var hiddenFields = [];
     var filterRate = null;
     var filterRate1 = null;
-    
+
 
     function search() {
         var url = "{{ url('/') }}/doctor/data?" + $.param(filter.filter);
-                             
+
         table.ajax.url(url);
         table.ajax.reload();
     }
@@ -179,7 +179,7 @@ $builder = (new App\Doctor)->getViewBuilder();
         filterRate1.rate(0);
         search();
     }
- 
+
     function reload() {
         //
     }
@@ -218,16 +218,21 @@ $builder = (new App\Doctor)->getViewBuilder();
             ]
         });
 
+        init();
+
         filterRate = new Ratebar(document.getElementById('filterRate'));
         filterRate.setOnRate(function(){
             filter.filter.reservation_rate = filterRate.value;
-        }); 
+        });
 
         filterRate1 = new Ratebar(document.getElementById('filterRate1'));
         filterRate1.setOnRate(function(){
             filter.filter.degree_rate = filterRate1.value;
-        }); 
+        });
     });
 
+    function init() {
+        $('.select2').select2();
+    }
 </script>
 @endsection
