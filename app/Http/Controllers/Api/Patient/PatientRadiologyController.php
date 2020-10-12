@@ -59,7 +59,7 @@ class PatientRadiologyController extends Controller
             // fitler the resault with insurance id
 
             if ($request->insurance == 1 && $patient->insurance_id) {
-                $resault[] = $this->insuranceRadiologyFilter($resault, $patient->insurance_id);
+                $resault = $this->insuranceRadiologyFilter($resault, $patient->insurance_id);
             }
             //  return $patient->insurance_id;
             // build return message
