@@ -33,7 +33,7 @@ class Doctor extends Model {
         'reservation_rate',
         'degree_rate',
     ];
-     
+
     /**
      * The attributes that are mass assignable.
      *
@@ -42,28 +42,28 @@ class Doctor extends Model {
     protected $appends = [
         'insurance_company', 'url', 'cv_url', 'cv2_url'
     ];
-    
+
     public function getUrlAttribute() {
         if (!$this->photo || $this->photo == 'doctor.png') {
             return url('/image/icon/doctor.png');
         }
-        
+
         return url("image/doctor/" . $this->photo);
     }
-    
-    public function getCvUrlAttribute() { 
+
+    public function getCvUrlAttribute() {
         return url("file/doctor/" . $this->cv);
     }
-    
-    public function getCv2UrlAttribute() { 
+
+    public function getCv2UrlAttribute() {
         return url("file/doctor/" . $this->cv2);
     }
-    
+
     public function getInsuranceCompanyAttribute() {
         $ids = $this->doctor_insurances()->pluck("insurance_id");
         return Insurance::whereIn("id", $ids)->get();
     }
-    
+
     public function degree() {
         return $this->belongsTo('App\Degree', 'degree_id');
     }
@@ -71,17 +71,17 @@ class Doctor extends Model {
     public function specialization() {
         return $this->belongsTo('App\Specialization', 'specialization_id');
     }
-    
+
       public function getJson()
     {
         $this->photo = url('/image/doctor/') . "/" . $this->photo;
-      
+
         $this->cv = url('/file/doctor/') . "/" .  $this->cv;
-        
+
          $this->doctor_insurances = $this->doctor_insurances;
         $this->degree = $this->degree;
         $this->specialization = $this->specialization;
-      
+
         return $this;
     }
 
@@ -112,47 +112,53 @@ class Doctor extends Model {
     public function doctor_insurances() {
         return $this->hasMany('App\DoctorInsurance');
     }
-    
-    
+
+
     /**
      * return specialization as array of two index
      * [specialization->id, specialization->name]
-     * 
+     *
      * @return array
      */
-    public function getSpecializationArray() { 
+    public function getSpecializationArray() {
         $specializations = [];
         foreach (Specialization::all() as $sepcail) {
             $specializations[] = [$sepcail->id, $sepcail->name];
         }
-        
+
         return $specializations;
     }
-    
-    
+
+
     /**
      * return degree as array of two index
      * [degree->id, degree->name]
-     * 
+     *
      * @return array
      */
-    public function getDegreeArray() { 
+    public function getDegreeArray() {
         $degrees = [];
         foreach (Degree::all() as $degree) {
             $degrees[] = [$degree->id, $degree->name];
         }
-        
+
         return $degrees;
     }
 
     /**
      * build view object this will make view html
-     * 
+     *
      * @return ViewBuilder
      */
     public function getViewBuilder() {
         $builder = new ViewBuilder($this, "rtl");
- 
+
+        $insurances = [
+        ];
+        foreach (Insurance::get(['id', 'name']) as $item)
+            $insurances[] = [$item->id, $item->name];
+
+
         $builder->setPageTitle("doctors")
                 ->setAddRoute(url('/doctor/store'))
                 ->setEditRoute(url('/doctor/update') . "/" . $this->id)
@@ -174,11 +180,12 @@ class Doctor extends Model {
                 ->setCol(["name" => "cv2", "label" => "السيره الذاتيه المعدله", "type" => "pdf", "required" => false])
                 ->setCol(["name" => "cv", "label" => "السيره الذاتيه", "type" => "pdf", "required"=> false])
                 ->setCol(["name" => "photo", "label" => "الصوره", "type" => "image", "required"=> false])
+                ->setCol(["name" => "insurance_id", "label" => __('insurance_companies'), "type" => "multi_select", "data" => $insurances])
                 ->setCol(["name" => "reservation_rate", "label" => "تقيم الحجزات", "type" => "rate", "col" => "w3-col l12 m12 s12"])
                 ->setCol(["name" => "degree_rate", "label" => "تقيم الدرجه العلميه", "type" => "rate", "col" => "w3-col l12 m12 s12"])
                 ->setUrl(url('/image/doctor'))
                 ->build();
-        
+
         return $builder;
     }
 
@@ -195,26 +202,26 @@ class Doctor extends Model {
                 "user_id"=>$userId,
                 "order_id"=> $orderId,
                 "user_type"=>$userType
-              
+
                 ]);
-                
-                      
+
+
             $data = [
                 "title_ar" => $title_ar,
                 "title_en" => $title_en,
                 "body_ar" => $message_ar,
-                "body_en" => $message_en,    
+                "body_en" => $message_en,
             ];
-            
+
             $token = [
                 Doctor::find($userId)->firebase_token
             ];
-                
+
             return Helper::firebaseNotification($token, $data);
-         
-            
+
+
         }catch(\Exception $e){}
     }
-    
+
 }
 
