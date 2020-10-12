@@ -176,7 +176,7 @@ class PatienDoctorController extends Controller
             return $nearestClinics;
 
         if (count($nearestClinics) <= 0)
-            $this->searchNearstClinics($lng, $lat,  $specialization, 2 * $km);
+            $this->searchNearstClinics($lng, $lat,  $specialization, 2 * $km, $searchNumber ++);
 
         // sort the resault with nearst km
         $nearestClinics = array_sort($nearestClinics, 'distance', SORT_ASC);
