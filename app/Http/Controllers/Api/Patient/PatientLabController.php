@@ -48,11 +48,11 @@ class PatientLabController extends Controller
             ////search by using lab id
             if ($request->has("lab_id") && $request->lab_id != null) {
                 $resault[] = Lab::find($request->lab_id);
-            } else if ($request->has("city") && $request->has("area")) {
-                $resault = Lab::where("city", $request->city)
-                    ->where("area", $request->area)->get();
-            } else if ($request->has("latt") && $request->has("lang")) {
-                $resault = $this->searchNearstLabs($request->lang, $request->latt);
+            } else if ($request->has("city_id") && $request->has("area_id")) {
+                $resault = Lab::where("city_id", $request->city_id_id)
+                    ->where("area_id", $request->area_id_id)->get();
+            } else if ($request->has("lat") && $request->has("lng")) {
+                $resault = $this->searchNearstLabs($request->lng, $request->lat);
             }
 
             // fitler the resault with insurance id
@@ -92,7 +92,7 @@ class PatientLabController extends Controller
 
         foreach ($labs as $lab) {
             // calculate distance between current lng lat and lab lng lat
-            $distance = Helper::latLangDistance($lat, $lng, $lab->latt, $lab->lang);
+            $distance = Helper::latlngDistance($lat, $lng, $lab->lat, $lab->lng);
             $lab->distance = $distance;
 
             if ($distance <= $km)
@@ -188,10 +188,10 @@ class PatientLabController extends Controller
                 return Message::error($messsage, null,$messsage_en);
 
 
-            $city_ar = City::find($labOrder->lab->city)? City::find($labOrder->lab->city)->name_ar : null;
-            $city_en = City::find($labOrder->lab->city)? City::find($labOrder->lab->city)->name : null;
-            $area_ar = Area::find($labOrder->lab->area)? Area::find($labOrder->lab->area)->name_ar : null;
-            $area_en = Area::find($labOrder->lab->area)? Area::find($labOrder->lab->area)->name : null;
+            $city_ar = City::find($labOrder->lab->city_id)? City::find($labOrder->lab->city_id)->name_ar : null;
+            $city_en = City::find($labOrder->lab->city_id)? City::find($labOrder->lab->city_id)->name : null;
+            $area_ar = Area::find($labOrder->lab->area_id)? Area::find($labOrder->lab->area_id)->name_ar : null;
+            $area_en = Area::find($labOrder->lab->area_id)? Area::find($labOrder->lab->area_id)->name : null;
 
             $message = str_replace("patient", $labOrder->patient->name, Message::$LAB_ORDER);
             $message = str_replace("number", $orderNumber, $message);
