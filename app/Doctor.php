@@ -40,8 +40,12 @@ class Doctor extends Model {
      * @var array
      */
     protected $appends = [
-        'insurance_company', 'url', 'cv_url', 'cv2_url'
+        'insurance_company', 'url', 'cv_url', 'cv2_url', 'insurance_id'
     ];
+
+    public function getInsuranceIdAttribute() {
+        return implode(',', $this->doctor_insurances()->select('insurance_id')->distinct()->get(['insurance_id'])->pluck('insurance_id')->toArray());
+    }
 
     public function getUrlAttribute() {
         if (!$this->photo || $this->photo == 'doctor.png') {
