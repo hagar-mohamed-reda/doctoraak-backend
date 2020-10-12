@@ -66,9 +66,6 @@ class PatientRadiologyController extends Controller
             $messsage = str_replace("n", count($resault), Message::$RADIOLOGY_SEARCH);
             $messsage_en = str_replace("x", count($resault), Message::$RADIOLOGY_SEARCH_EN);
 
-            return $resault;
-
-
             return Message::success($messsage, Helper::jsonFilter($resault),$messsage_en);
         } catch (\Exception $ex) {
             return Message::error(Message::$ERROR , null ,Message::$ERROR_EN);
