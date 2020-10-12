@@ -92,7 +92,7 @@ class PatientLabController extends Controller
 
         foreach ($labs as $lab) {
             // calculate distance between current lng lat and lab lng lat
-            $distance = Helper::latlngDistance($lat, $lng, $lab->lat, $lab->lng);
+            $distance = Helper::latLangDistance($lat, $lng, $lab->lat, $lab->lng);
             $lab->distance = $distance;
 
             if ($distance <= $km)
