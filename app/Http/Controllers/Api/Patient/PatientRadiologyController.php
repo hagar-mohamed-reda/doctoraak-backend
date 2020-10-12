@@ -49,11 +49,11 @@ class PatientRadiologyController extends Controller
             ////search by using radiology id
             if ($request->has("radiology_id") && $request->radiology_id != null) {
                 $resault[] = Radiology::find($request->radiology_id);
-            } else if ($request->has("city") && $request->has("area")) {
-                $resault = Radiology::where("city", $request->city)
-                    ->where("area", $request->area)->get();
-            } else if ($request->has("latt") && $request->has("lang")) {
-                $resault = $this->searchNearstRadiologys($request->lang, $request->latt);
+            } else if ($request->has("city_id") && $request->has("area_id")) {
+                $resault = Radiology::where("city_id", $request->city_id)
+                    ->where("area_id", $request->area_id)->get();
+            } else if ($request->has("lat") && $request->has("lng")) {
+                $resault = $this->searchNearstRadiologys($request->lng, $request->lat);
             }
 
             // fitler the resault with insurance id
@@ -78,8 +78,8 @@ class PatientRadiologyController extends Controller
     {
         $filteredRadiologys = [];
         foreach ($radiologys as $radiology) {
-            if ($radiology->radiology_insurances()->where("insurance_id", $insurance)->count() > 0) {
-                //  $filteredRadiologys[] = $radiology;
+            if (optional($radiology->radiology_insurances())->where("insurance_id", $insurance)->count() > 0) {
+                $filteredRadiologys[] = $radiology;
             }
         }
 
@@ -97,7 +97,7 @@ class PatientRadiologyController extends Controller
 
         foreach ($radiologys as $radiology) {
             // calculate distance between current lng lat and radiology lng lat
-            $distance = Helper::latLangDistance($lat, $lng, $radiology->latt, $radiology->lang);
+            $distance = Helper::latLangDistance($lat, $lng, $radiology->lat, $radiology->lng);
             $radiology->distance = $distance;
 
             if ($distance <= $km)
@@ -114,9 +114,9 @@ class PatientRadiologyController extends Controller
     }
 
     public function createRadiologyOrder(Request $request)
-    {  
+    {
          $orderdetails = json_decode($request->orderDetails);
-       
+
         $validator = validator()->make(
             $request->all(),
             [
@@ -138,7 +138,7 @@ class PatientRadiologyController extends Controller
         if ($request->has("orderDetails")) {
             $messsage = str_replace("n", Settings::find(5)->value, Message::$MAX_ORDER__DETAILS_NUMBER);
             $messsage_en = str_replace("x", Settings::find(5)->value, Message::$MAX_ORDER__DETAILS_NUMBER_EN);
-          
+
             if (count($orderdetails) > Settings::find(5)->value) {
                 return Message::error($messsage, null ,$messsage_en);
             }
@@ -151,10 +151,10 @@ class PatientRadiologyController extends Controller
             $radiology = Radiology::find($request->radiology_id);
             $workingHours = RadiologyWorkingHours::where("day", workingHours::getDay($request->date))
                 ->where("radiology_id", $radiology->id)->where('active', '1')->first();
-           
+
             if (!$workingHours)
                 return Message::error(Message::$DAY_OFF, null,Message::$DAY_OFF_EN);
-           
+
             if ($workingHours->active != 1) {
                 return Message::error(Message::$DAY_OFF, null ,Message::$DAY_OFF_EN);
             }
@@ -191,11 +191,11 @@ class PatientRadiologyController extends Controller
             if ($orderNumber > Settings::find(6)->value)
                 return Message::error($messsage, null ,$messsage_en);
 
-            $city_ar = City::find($radiologyOrder->radiology->city)? City::find($radiologyOrder->radiology->city)->name_ar : null;
-            $city_en = City::find($radiologyOrder->radiology->city)? City::find($radiologyOrder->radiology->city)->name : null;
-            $area_ar = Area::find($radiologyOrder->radiology->area)? Area::find($radiologyOrder->radiology->area)->name_ar : null;
-            $area_en = Area::find($radiologyOrder->radiology->area)? Area::find($radiologyOrder->radiology->area)->name : null;
-            
+            $city_ar = City::find($radiologyOrder->radiology->city_id)? City::find($radiologyOrder->radiology->city_id)->name_ar : null;
+            $city_en = City::find($radiologyOrder->radiology->city_id)? City::find($radiologyOrder->radiology->city_id)->name : null;
+            $area_ar = Area::find($radiologyOrder->radiology->area_id)? Area::find($radiologyOrder->radiology->area_id)->name_ar : null;
+            $area_en = Area::find($radiologyOrder->radiology->area_id)? Area::find($radiologyOrder->radiology->area_id)->name : null;
+
 
             $message = str_replace("patient", $radiologyOrder->patient->name, Message::$RADIOLOGY_ORDER);
             $message = str_replace("number", $orderNumber, $message);
@@ -203,28 +203,28 @@ class PatientRadiologyController extends Controller
             $message = str_replace("phone", $radiologyOrder->radiology->phone, $message);
             $message = str_replace("city", $city_ar, $message);
             $message = str_replace("area", $area_ar, $message);
-           
-            
+
+
             $message_en = str_replace("patient", $radiologyOrder->patient->name, Message::$RADIOLOGY_ORDER_EN);
             $message_en = str_replace("numbers", $orderNumber, $message_en);
             $message_en = str_replace("name", $radiologyOrder->radiology->name, $message_en);
             $message_en = str_replace("phones", $radiologyOrder->radiology->phone, $message_en);
             $message_en = str_replace("citys", $city_en, $message_en);
             $message_en = str_replace("areas", $area_en, $message_en);
-           
+
             /////notification to patients /////////////////////////
             $title_ar = "بيانات الحجز الخاص بك ".Patient::find($request->patient_id)->name;
             $title_en = "your reservation details ".Patient::find($request->patient_id)->name;
             Patient::notify($title_ar,  $title_en,$message,  $message_en, $icon='icon.png',$request->patient_id, $radiologyOrder->id, "RADIOLOGY");
-            
-            
+
+
             ///////////////notification for radiology
             $message_ar_r ="لقد قام   ".Patient::find($request->patient_id)->name." بالحجز لديك و رقم هانفه " .Patient::find($request->patient_id)->phone;
             $message_en_r = "you have new book from ". Patient::find($request->patient_id)->name . "has phone number is" . Patient::find($request->patient_id)->phone ;
             $title_ar_r = "بيانات الحجز ";
             $title_en_r = "Reservation details";
             Radiology::notify($title_ar_r,  $title_en_r,$message_ar_r,  $message_en_r, $icon='icon.png',$request->radiology_id, $radiologyOrder->id);
-            
+
             return Message::success($message, null,  $message_en);
         } catch (\Exception $ex) {
             return Message::error(Message::$ERROR , null ,Message::$ERROR_EN);
