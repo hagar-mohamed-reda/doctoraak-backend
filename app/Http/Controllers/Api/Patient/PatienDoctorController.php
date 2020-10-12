@@ -56,7 +56,7 @@ class PatienDoctorController extends Controller
             $patient = Patient::find($request->patient_id);
 
             // search with city and area if exist
-            if ($request->has("city_id") && $request->has("city_id")) {
+            if ($request->has("city_id") && $request->has("area_id")) {
 
             $resault = Clinic::select('*', DB::raw('clinics.id AS id'))
                     ->where("specialization_id", $request->specialization_id)
@@ -153,7 +153,7 @@ class PatienDoctorController extends Controller
      * @param [type] $newkm
      * @return void
      */
-    public function searchNearstClinics($lng, $lat, $specialization, $newkm = null)
+    public function searchNearstClinics($lng, $lat, $specialization, $newkm = null, $searchNumber = 0)
     {
         $km = (float) Settings::find(1)->value;
         if ($newkm)
@@ -171,6 +171,9 @@ class PatienDoctorController extends Controller
             if (($distance <= $km) && (optional($clinic->doctor)->specialization_id ==  $specialization))
                 $nearestClinics[] = $clinic;
         }
+
+        if ($searchNumber > 2)
+            return $nearestClinics;
 
         if (count($nearestClinics) <= 0)
             $this->searchNearstClinics($lng, $lat,  $specialization, 2 * $km);
