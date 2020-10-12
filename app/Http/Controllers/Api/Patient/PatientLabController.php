@@ -47,9 +47,9 @@ class PatientLabController extends Controller
             $resault = [];
             ////search by using lab id
             if ($request->has("lab_id") && $request->lab_id != null) {
-                $resault[] = Lab::with(['lab_insurances', 'working_hours'])->find($request->lab_id);
+                $resault[] = Lab::find($request->lab_id);
             } else if ($request->has("city_id") && $request->has("area_id")) {
-                $resault = Lab::with(['lab_insurances', 'working_hours'])->where("city_id", $request->city_id_id)
+                $resault = Lab::where("city_id", $request->city_id_id)
                     ->where("area_id", $request->area_id_id)->get();
             } else if ($request->has("lat") && $request->has("lng")) {
                 $resault = $this->searchNearstLabs($request->lng, $request->lat);
@@ -63,7 +63,7 @@ class PatientLabController extends Controller
             $messsage = str_replace("n", count($resault), Message::$LAB_SEARCH);
             $messsage_en = str_replace("x", count($resault), Message::$LAB_SEARCH_EN);
 
-              return Message::success($messsage, $resault,$messsage_en);
+              return Message::success($messsage, Helper::jsonFilter($resault),$messsage_en);
          } catch (\Exception $ex) {
             return Message::error(Message::$ERROR, null,Message::$ERROR_EN);
         }
@@ -88,7 +88,7 @@ class PatientLabController extends Controller
             $km = $newkm;
 
         $nearestLabs = [];
-        $labs = Lab::with(['lab_insurances', 'working_hours'])->get();
+        $labs = Lab::all();
 
         foreach ($labs as $lab) {
             // calculate distance between current lng lat and lab lng lat
