@@ -173,7 +173,7 @@ class Doctor extends Model {
                 ->setCol(["name" => "name_ar", "label" => "الاسم بالعربيه", "required" => false, "important" => false])
                 ->setCol(["name" => "name_fr", "label" => "الاسم بالفرنسيه", "required" => false, "important" => false])
                 ->setCol(["name" => "phone", "label" => "الهاتف", "type" => "phone"])
-                ->setCol(["name" => "email", "label" => "الاميل", "important" => false, "type" => "email"])
+                ->setCol(["name" => "email", "label" => "الاميل", "important" => false, "type" => "email", "required" => false])
                 ->setCol(["name" => "password", "label" => "كلمة المرور", "type" => "password"])
                 ->setCol(["name" => "specialization_id", "label" => "التخصص", "type" => "select", "data" => $this->getSpecializationArray()])
                 ->setCol(["name" => "degree_id", "label" => "الدرجه العلميه", "type" => "select", "data" => $this->getDegreeArray()])
