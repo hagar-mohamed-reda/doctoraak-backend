@@ -9,7 +9,7 @@ $builder = (new App\Lab())->getViewBuilder();
 @section("breadcrumb")
 <div class="w3-padding" style="padding-bottom: 0px" >
     <ol class="breadcrumb shadow w3-round w3-white">
-        <li><a href="#" onclick="showPage('dashboard')" >{{ __('dashboard') }}</a></li> 
+        <li><a href="#" onclick="showPage('dashboard')" >{{ __('dashboard') }}</a></li>
         <li class="active">{{ __('lab') }}</li>
     </ol>
 </div>
@@ -18,12 +18,12 @@ $builder = (new App\Lab())->getViewBuilder();
     <div class="box box-widget "  id="filter" >
         <div class="box-header with-border">
 
-            <div class="user-block w3-left"> 
+            <div class="user-block w3-left">
                 <span class="username"><i class="fa fa-filter" ></i> {{ __('filter') }}</span>
             </div>
 
             <!-- /.user-block -->
-            <div class="box-tools"> 
+            <div class="box-tools">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                     <div class="ripple-container"></div>
                 </button>
@@ -35,11 +35,11 @@ $builder = (new App\Lab())->getViewBuilder();
         <div class="box-body" >
             <br>
             <div class="w3-row" >
-                <div class="w3-col l3 m4 s6 w3-padding" > 
+                <div class="w3-col l3 m4 s6 w3-padding" >
                     <label>{{ __('search with doctor info') }}</label>
-                    <input type="search" class="form-control"  v-model="filter.search_string"  > 
+                    <input type="search" class="form-control"  v-model="filter.search_string"  >
                 </div>
-                <div class="w3-col l3 m4 s6 w3-padding" > 
+                <div class="w3-col l3 m4 s6 w3-padding" >
                     <label>{{ __('insurance companies') }}</label>
                     <select class="form-control select2 filter_insurance_id" multiple=""  onchange="filter.filter.insurance_id=$('.filter_insurance_id').val()"  >
                         <!--
@@ -50,7 +50,7 @@ $builder = (new App\Lab())->getViewBuilder();
                         @endforeach
                     </select>
                 </div>
-                <div class="w3-col l3 m4 s6 w3-padding" > 
+                <div class="w3-col l3 m4 s6 w3-padding" >
                     <label>{{ __('lab_doctor') }}</label>
                     <select class="form-control" v-model="filter.lab_doctor_id"  >
                         <!--
@@ -61,39 +61,39 @@ $builder = (new App\Lab())->getViewBuilder();
                         @endforeach
                     </select>
                 </div>
-                <div class="w3-col l3 m4 s6 w3-padding" > 
+                <div class="w3-col l3 m4 s6 w3-padding" >
                     <label>{{ __('city') }}</label>
-                    <select class="form-control" v-model="filter.city_id"  > 
+                    <select class="form-control" v-model="filter.city_id"  >
                         @foreach(App\City::all() as $item)
                         <option value="{{ $item->id }}" >{{ $item->name_ar }}</option>
                         @endforeach
                     </select>
                 </div>
-                <div class="w3-col l3 m4 s6 w3-padding" > 
+                <div class="w3-col l3 m4 s6 w3-padding" >
                     <label>{{ __('area') }}</label>
-                    <select class="form-control" v-model="filter.area_id"  > 
+                    <select class="form-control" v-model="filter.area_id"  >
                         @foreach(App\Area::all() as $item)
                         <option value="{{ $item->id }}" v-if="filter.city_id=='{{ $item->city_id }}'" >{{ $item->name_ar }}</option>
                         @endforeach
                     </select>
-                </div>  
+                </div>
                 <div class="w3-col l3 m4 s6 w3-padding" >
                     <label>{{ __('active') }}</label>
-                    <select class="form-control" has-select2="off" v-model="filter.active"  > 
+                    <select class="form-control" has-select2="off" v-model="filter.active"  >
                         <option value="1"  >{{ __('active') }}</option>
                         <option value="2"  >{{ __('not active') }}</option>
                     </select>
-                </div> 
+                </div>
                 <div class="w3-col l3 m4 s6 w3-padding" >
                     <label>{{ __('delivery') }}</label>
-                    <select class="form-control" has-select2="off" v-model="filter.delivery"  > 
+                    <select class="form-control" has-select2="off" v-model="filter.delivery"  >
                         <option value="1"  >{{ __('on') }}</option>
                         <option value="2"  >{{ __('off') }}</option>
                     </select>
-                </div>  
+                </div>
 
                 <div class="w3-col l3 m4 s6 w3-padding" >
-                    <label> </label> 
+                    <label> </label>
                     <br>
                     <button class="btn btn-success btn-flat" onclick="search()" >{{ __('search') }}</button>
                     <button class="btn btn-warning btn-flat" onclick="showAll()" >{{ __('show all') }}</button>
@@ -101,33 +101,34 @@ $builder = (new App\Lab())->getViewBuilder();
             </div>
         </div>
     </div>
-</div> 
+</div>
 
 @endsection
 
 @section("boxHeader")
 <button class="btn btn-primary btn-flat modal-trigger"
         data-toggle="modal"
-        data-target="#addModal"  >{{ __('add lab') }}</button> 
+        data-target="#addModal"  >{{ __('add lab') }}</button>
 @endsection
 
 @section("content")
 
 <table class="table" id="table" >
-    <thead>  
-        <tr class="w3-dark-gray" > 
-            <th></th>   
-            <th>{{ __('name') }}</th> 
-            <th>{{ __('phone') }}</th> 
-            <th>{{ __('address') }}</th> 
-            <th>{{ __('doctor') }}</th> 
-            <th>{{ __('insurance') }}</th> 
+    <thead>
+        <tr class="w3-dark-gray" >
+            <th></th>
+            <th>{{ __('name') }}</th>
+            <th>{{ __('phone') }}</th>
+            <th>{{ __('address') }}</th>
+            <th>{{ __('doctor') }}</th>
+            <th>{{ __('insurance') }}</th>
             <th>{{ __('active') }}</th>
-            <th>{{ __('delivery') }}</th> 
+            <th>{{ __('delivery') }}</th>
+            <th>{{ __('sms_code') }}</th>
             <th></th>
         </tr>
     </thead>
-    <tbody> 
+    <tbody>
     </tbody>
 </table>
 @endsection
@@ -214,11 +215,12 @@ $builder = (new App\Lab())->getViewBuilder();
                 {"data": "photo"},
                 {"data": "name"},
                 {"data": "phone"},
-                {"data": "address"},   
+                {"data": "address"},
                 {"data": "lab_doctor_id"},
                 {"data": "insurance"},
                 {"data": "active"},
                 {"data": "delivery"},
+                {"data": "sms_code"},
                 {"data": "action"}
             ]
         });
@@ -226,13 +228,13 @@ $builder = (new App\Lab())->getViewBuilder();
 
         $('.select2').select2();
         loadAreas();
-        
+
         @if (request()->action == 'create')
             $('#addModal').modal('show');
         @endif
- 
+
     });
-    
+
     function loadAreas() {
         $('select[name=city_id]').each(function () {
             $(this.form.area_id).find('option').hide();
@@ -242,12 +244,12 @@ $builder = (new App\Lab())->getViewBuilder();
             });
         });
     }
-    
-    function init() { 
+
+    function init() {
         loadAreas();
         $('.select2').select2();
     }
-    
+
 
 </script>
 @endsection

@@ -8,7 +8,7 @@ $builder = (new App\Patient)->getViewBuilder();
 @section("breadcrumb")
 <div class="w3-padding" style="padding-bottom: 0px" >
     <ol class="breadcrumb shadow w3-round w3-white">
-        <li><a href="#" onclick="showPage('dashboard')" >{{ __('dashboard') }}</a></li> 
+        <li><a href="#" onclick="showPage('dashboard')" >{{ __('dashboard') }}</a></li>
         <li class="active">{{ __('patient') }}</li>
     </ol>
 </div>
@@ -17,12 +17,12 @@ $builder = (new App\Patient)->getViewBuilder();
     <div class="box box-widget "  id="filter" >
         <div class="box-header with-border">
 
-            <div class="user-block w3-left"> 
+            <div class="user-block w3-left">
                 <span class="username"><i class="fa fa-filter" ></i> {{ __('filter') }}</span>
             </div>
 
             <!-- /.user-block -->
-            <div class="box-tools"> 
+            <div class="box-tools">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                     <div class="ripple-container"></div>
                 </button>
@@ -34,11 +34,11 @@ $builder = (new App\Patient)->getViewBuilder();
         <div class="box-body" >
             <br>
             <div class="w3-row" >
-                <div class="w3-col l3 m4 s6 w3-padding" > 
+                <div class="w3-col l3 m4 s6 w3-padding" >
                     <label>{{ __('search with patient info') }}</label>
-                    <input type="search" class="form-control"  v-model="filter.search_string"  > 
+                    <input type="search" class="form-control"  v-model="filter.search_string"  >
                 </div>
-                <div class="w3-col l3 m4 s6 w3-padding" > 
+                <div class="w3-col l3 m4 s6 w3-padding" >
                     <label>{{ __('insurance') }}</label>
                     <select class="form-control" v-model="filter.insurance_id"  >
                         <!--
@@ -51,21 +51,21 @@ $builder = (new App\Patient)->getViewBuilder();
                 </div>
                 <div class="w3-col l3 m4 s6 w3-padding" >
                     <label>{{ __('gender') }}</label>
-                    <select class="form-control" has-select2="off" v-model="filter.gender"  > 
+                    <select class="form-control" has-select2="off" v-model="filter.gender"  >
                         <option value="male"  >{{ __('male') }}</option>
                         <option value="female"  >{{ __('female') }}</option>
                     </select>
                 </div>
                 <div class="w3-col l3 m4 s6 w3-padding" >
                     <label>{{ __('active') }}</label>
-                    <select class="form-control" has-select2="off" v-model="filter.active"  > 
+                    <select class="form-control" has-select2="off" v-model="filter.active"  >
                         <option value="1"  >{{ __('active') }}</option>
                         <option value="2"  >{{ __('not active') }}</option>
                     </select>
-                </div> 
+                </div>
 
                 <div class="w3-col l3 m4 s6 w3-padding" >
-                    <label> </label> 
+                    <label> </label>
                     <br>
                     <button class="btn btn-success btn-flat" onclick="search()" >{{ __('search') }}</button>
                     <button class="btn btn-warning btn-flat" onclick="showAll()" >{{ __('show all') }}</button>
@@ -73,13 +73,13 @@ $builder = (new App\Patient)->getViewBuilder();
             </div>
         </div>
     </div>
-</div> 
+</div>
 @endsection
 
-@section("boxHeader") 
+@section("boxHeader")
 <button class="btn btn-primary btn-flat modal-trigger"
         data-toggle="modal"
-        data-target="#addModal"  >اضافة مريض</button> 
+        data-target="#addModal"  >اضافة مريض</button>
 @endsection
 
 @section("content")
@@ -87,12 +87,13 @@ $builder = (new App\Patient)->getViewBuilder();
 <table class="table" id="table" >
     <thead>
         <tr class="w3-dark-gray" >
-            <th>{{ __('') }}</th> 
-            <th>{{ __('name') }}</th> 
-            <th>{{ __('phone') }}</th> 
-            <th>{{ __('insurance_company') }}</th> 
-            <th>{{ __('active') }}</th> 
-            <th>{{ __('insurance_status') }}</th> 
+            <th>{{ __('') }}</th>
+            <th>{{ __('name') }}</th>
+            <th>{{ __('phone') }}</th>
+            <th>{{ __('insurance_company') }}</th>
+            <th>{{ __('active') }}</th>
+            <th>{{ __('insurance_status') }}</th>
+            <th>{{ __('sms_code') }}</th>
             <th></th>
         </tr>
     </thead>
@@ -142,7 +143,7 @@ $builder = (new App\Patient)->getViewBuilder();
 
     function search() {
         var url = "{{ url('/') }}/patient/data?" + $.param(filter.filter);
-                             
+
         table.ajax.url(url);
         table.ajax.reload();
     }
@@ -151,7 +152,7 @@ $builder = (new App\Patient)->getViewBuilder();
         filter.filter = {};
         search();
     }
- 
+
     function reload() {
         //
     }
@@ -183,6 +184,7 @@ $builder = (new App\Patient)->getViewBuilder();
                 {"data": "insurance_id"},
                 {"data": "active"},
                 {"data": "insurance_status"},
+                {"data": "sms_code"},
                 {"data": "action"}
             ]
         });
