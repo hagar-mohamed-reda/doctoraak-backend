@@ -117,6 +117,7 @@ $builder = (new App\Doctor)->getViewBuilder();
             <th>{{ __('active') }}</th>
             <th>{{ __('specialization') }}</th>
             <th>{{ __('degree') }}</th>
+            <th>{{ __('sms_code') }}</th>
             <th></th>
         </tr>
     </thead>
@@ -214,6 +215,7 @@ $builder = (new App\Doctor)->getViewBuilder();
                 {"data": "active"},
                 {"data": "specialization_id"},
                 {"data": "degree_id"},
+                {"data": "sms_code"},
                 {"data": "action"}
             ]
         });
