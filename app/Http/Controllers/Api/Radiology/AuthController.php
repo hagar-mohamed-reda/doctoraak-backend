@@ -27,17 +27,17 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        
-        
+
+
          $insurances = json_decode($request->insurance);
          $working_hours = json_decode($request->working_hours);
-         
+
         $validator = validator()->make($request->all(), [
             'name' => 'required',
          //   'email' => 'required',
             'phone' => 'required|max:11',
             'password' => 'required|min:8',
-          
+
 
         ]);
 
@@ -45,14 +45,14 @@ class AuthController extends Controller
             return Message::error($validator->errors()->first());
         }
 
-      
+
         // check phone
         if (Radiology::where("phone", $request->phone)->count() > 0)
           return Message::error(Message::$PHONE_UNIQUE,  null ,Message::$PHONE_UNIQUE_EN);
 
-     
+
         try {
-         
+
               $user= new Radiology();
             $user->name = $request->name;
             $user->email = $request->email;
@@ -64,11 +64,11 @@ class AuthController extends Controller
             $user->active = 0;
             $user->lang = $request->lang;
             $user->latt = $request->latt;
-            $user->city = $request->city;
-            $user->area = $request->area;
-            
+            $user->city_id = $request->city_id;
+            $user->area_id = $request->area_id;
+
             $user->save();
-          
+
             if ($request->hasFile('photo')) {
                 $user->photo = Helper::uploadImg($request->file("photo"), "/radiology/");
             }
@@ -81,8 +81,8 @@ class AuthController extends Controller
                     $d->save();
                 }
             }
-            
-            
+
+
              foreach ($working_hours as $working_hour) {
                 $d = new RadiologyWorkingHours;
                 $d->radiology_id = $user->id;
@@ -92,7 +92,7 @@ class AuthController extends Controller
                 $d->active = $working_hour->active;
                 $d->save();
             }
-            
+
             $user->update(); // send sms message
              Helper::sendSms("Your Code is ".$user->sms_code, $user->phone);
             return Message::success(Message::$SUCCESS_REGISTER,$user->getJson(),Message::$SUCCESS_REGISTER_EN);
@@ -131,12 +131,12 @@ class AuthController extends Controller
             return Message::error(Message::$ERROR,  null,Message::$ERROR_EN);
         }
     }
-    
+
       public function resend(Request $request)
     {
         $validator = validator()->make($request->all(), [
             'user_id' => 'required|numeric',
-           
+
         ]);
         if ($validator->fails()) {
             return Message::error($validator->errors()->first());
@@ -146,21 +146,21 @@ class AuthController extends Controller
             $user = Radiology::find($request->user_id);
              Helper::sendSms("Your Code is ".$user->sms_code, $user->phone);
               return Message::success(Message::$VERIFIED, $user->getJson(),Message::$VERIFIED_EN);
-            
-           
+
+
         } catch (\Exception $e) {
             return Message::error(Message::$ERROR,  null,Message::$ERROR_EN);
         }
     }
-    
-    
-      
+
+
+
     public function resend_two(Request $request)
     {
         $validator = validator()->make($request->all(), [
             'phone' => 'required|numeric',
-            
-           
+
+
         ]);
         if ($validator->fails()) {
             return Message::error($validator->errors()->first());
@@ -168,16 +168,16 @@ class AuthController extends Controller
 
         try {
              $user = Radiology::where('phone', $request->phone)->first();
-          
+
              Helper::sendSms("Your Code is ".$user->sms_code, $user->phone);
               return Message::success(Message::$VERIFIED, $user->getJson(),Message::$VERIFIED_EN);
-            
-           
+
+
         } catch (\Exception $e) {
             return Message::error(Message::$ERROR,  null,Message::$ERROR_EN);
         }
     }
-    
+
     /**
      * login Radiology api
      *
@@ -199,7 +199,7 @@ class AuthController extends Controller
 
             if (!$user)
                 return Message::error(Message::$PHONE_ERROR_LOGIN,null,Message::$PHONE_ERROR_LOGIN_EN);
-            
+
             if (Hash::check($request->password, $user->password)) {
 
                 if ($user->active != 1) {
@@ -245,7 +245,7 @@ class AuthController extends Controller
             $smsMessage = str_replace("password", $newPassword, Message::$NEW_PASSWORD);
             Helper::sendSms($smsMessage, $user->phone);
 
-          
+
            return Message::success(Message::$PASSWORD_SENT,null,Message::$PASSWORD_SENT_EN);
         } catch (\Exception $e) {
             return Message::error(Message::$ERROR,  null,Message::$ERROR_EN);
@@ -298,10 +298,10 @@ class AuthController extends Controller
      */
     public function update_profile(Request $request)
     {
-          
+
          $insurances = json_decode($request->insurance);
         $working_hours = json_decode($request->working_hours);
-        
+
 
         $validator = validator()->make($request->all(), [
             'user_id' => 'required',
@@ -313,7 +313,7 @@ class AuthController extends Controller
 
         if (Radiology::where("api_token", $request->api_token)->count() <= 0)
            return Message::error(Message::$API_LOGIN,null,Message::$API_LOGIN_EN);
-      
+
         try {
 
             $user = Radiology::find($request->user_id);
@@ -321,22 +321,22 @@ class AuthController extends Controller
             $user->phone2 = $request->phone2;
             $user->lang = $request->lang;
             $user->latt = $request->latt;
-            $user->city =$request->city;
-            $user->area =$request->area;
+            $user->city_id =$request->city_id;
+            $user->area_id =$request->area_id;
             $user->delivery = $request->delivery;
-          
+
             if ($request->hasFile('photo')) {
                 // delete old image
                 try{
                      unlink(public_path("image/radiology") . "/" .  $user->photo);
-              
+
                 }  catch (\Exception $e) {
               }
                  $user->photo = Helper::uploadImg($request->file("photo"), "/radiology/");
             }
             DB::statement("delete from radiology_insurances where radiology_id='$user->id' ");
             // convert json array to array
-           
+
             if ($insurances != null) {
                 foreach ($insurances as $insurance) {
                     $d = new RadiologyInsurance;

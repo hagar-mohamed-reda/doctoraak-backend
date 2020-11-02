@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Pharmacy;
 
 
 use App\Pharmacy;
-use App\PharmacyInsurance; 
+use App\PharmacyInsurance;
 use App\PharmacyWorkingHours;
 
 
@@ -28,12 +28,12 @@ class AuthController extends Controller
      *
      * @param Request $request
      * @return void
-     */ 
+     */
     public function register(Request $request)
-    {   
+    {
         $working_hours = json_decode($request->working_hours);
         $insurances = json_decode($request->insurance);
-          
+
          $validator = validator()->make($request->all(), [
             'name' => 'required',
          //   'email' => 'required',
@@ -45,7 +45,7 @@ class AuthController extends Controller
             return Message::error($validator->errors()->first());
         }
 
-      
+
         // check phone
         if (Pharmacy::where("phone", $request->phone)->count() > 0)
                return Message::error(Message::$PHONE_UNIQUE,  null ,Message::$PHONE_UNIQUE_EN);
@@ -56,9 +56,9 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'phone2' => $request->phone2,
-                'city' => $request->city,
-                'area' => $request->area,
-               
+                'city_id' => $request->city_id,
+                'area_id' => $request->area_id,
+
                 'lang' => $request->lang,
                 'latt' => $request->latt,
                //'address' => $request->address,
@@ -69,22 +69,22 @@ class AuthController extends Controller
                 'active' => 0,
 
             ]);
-            
-            
+
+
             if ($request->hasFile('photo')) {
                 $user->photo = Helper::uploadImg($request->file("photo"), "/pharmacy/");
             }
 
-          
+
                 foreach ($insurances as $insurance) {
                     $d = new PharmacyInsurance;
                     $d->pharmacy_id = $user->id;
                     $d->insurance_id = $insurance;
                     $d->save();
                 }
-           
-           
-             
+
+
+
               foreach ($working_hours as $working_hour) {
                 $d = new PharmacyWorkingHours;
                 $d->pharmacy_id = $user->id;
@@ -94,9 +94,9 @@ class AuthController extends Controller
                 $d->active = $working_hour->active;
                 $d->save();
             }
-            
-            
-            $user->save(); 
+
+
+            $user->save();
             Helper::sendSms("Your Code is ".$user->sms_code, $user->phone);
              return Message::success(Message::$SUCCESS_REGISTER,$user->getJson(),Message::$SUCCESS_REGISTER_EN);
         } catch (\Exception $e) {
@@ -136,12 +136,12 @@ class AuthController extends Controller
             return Message::error(Message::$ERROR,  null,Message::$ERROR_EN);
         }
     }
-    
+
        public function resend(Request $request)
     {
         $validator = validator()->make($request->all(), [
             'user_id' => 'required|numeric',
-           
+
         ]);
         if ($validator->fails()) {
             return Message::error($validator->errors()->first());
@@ -151,20 +151,20 @@ class AuthController extends Controller
             $user = Pharmacy::find($request->user_id);
              Helper::sendSms("Your Code is ".$user->sms_code, $user->phone);
               return Message::success(Message::$VERIFIED, $user->getJson(),Message::$VERIFIED_EN);
-            
-           
+
+
         } catch (\Exception $e) {
             return Message::error(Message::$ERROR,  null,Message::$ERROR_EN);
         }
     }
-    
-     
+
+
     public function resend_two(Request $request)
     {
         $validator = validator()->make($request->all(), [
             'phone' => 'required|numeric',
-            
-           
+
+
         ]);
         if ($validator->fails()) {
             return Message::error($validator->errors()->first());
@@ -172,17 +172,17 @@ class AuthController extends Controller
 
         try {
                $user = Pharmacy::where('phone', $request->phone)->first();
-          
+
              Helper::sendSms("Your Code is ".$user->sms_code, $user->phone);
               return Message::success(Message::$VERIFIED, $user->getJson(),Message::$VERIFIED_EN);
-            
-           
+
+
         } catch (\Exception $e) {
             return Message::error(Message::$ERROR,  null,Message::$ERROR_EN);
         }
     }
-    
-    
+
+
     /**
      * login Pharmacy api
      *
@@ -204,7 +204,7 @@ class AuthController extends Controller
             // if ($request->password == $user->password)
             if (!$user)
                 return Message::error(Message::$PHONE_ERROR_LOGIN,null,Message::$PHONE_ERROR_LOGIN_EN);
-            
+
             if (Hash::check($request->password, $user->password)) {
 
                 if ($user->active != 1) {
@@ -264,7 +264,7 @@ class AuthController extends Controller
      * @return void
      */
     public function update_password(Request $request)
-    {  
+    {
        $validator = validator()->make($request->all(), [
             'phone' => 'required|max:11',
             'old_password' => 'required',
@@ -303,7 +303,7 @@ class AuthController extends Controller
     {
         $insurances = json_decode($request->insurance);
         $working_hours = json_decode($request->working_hours);
-        
+
         $validator = validator()->make($request->all(), [
             'user_id' => 'required',
             'api_token' => 'required',
@@ -323,7 +323,7 @@ class AuthController extends Controller
             $user->lang = $request->lang;
             $user->latt = $request->latt;
             $user->delivery = $request->delivery;
-          
+
             if ($request->hasFile('photo')) {
                 // delete old image
                 try{
@@ -332,8 +332,8 @@ class AuthController extends Controller
               }
                 $user->photo = Helper::uploadImg($request->file("photo"), "/pharmacy/");
             }
-            ///// 
-            
+            /////
+
             DB::statement("delete from pharmacy_insurances where pharmacy_id='$user->id' ");
             if ($insurances != null) {
                 foreach ($insurances as $insurance) {
@@ -343,10 +343,10 @@ class AuthController extends Controller
                     $d->save();
                 }
             }
-            
-            
+
+
             /////
-            
+
             DB::statement("delete from pharmacy_working_hours where pharmacy_id='$user->id' ");
             if ($working_hours != null) {
                  foreach ($working_hours as $working_hour) {
