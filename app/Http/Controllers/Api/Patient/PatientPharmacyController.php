@@ -19,7 +19,7 @@ use DB;
 class PatientPharmacyController extends Controller
 {
 
-    // return all pharmacy 
+    // return all pharmacy
     public function showPharmacy()
     {
         $data = Pharmacy::select('*')->where('active','1')->get();
@@ -28,7 +28,7 @@ class PatientPharmacyController extends Controller
 
 
 
-   // filter pharmacy to make order 
+   // filter pharmacy to make order
     public function pharmacyFilter(Request $request)
     {
 
@@ -56,12 +56,12 @@ class PatientPharmacyController extends Controller
             ////search by using lab id
             if ($request->has("pharmacy_id") && $request->pharmacy_id != null) {
                 $resault[] = Pharmacy::find($request->pharmacy_id);
-            } else if ($request->has("city") && $request->has("area")) {
-                $resault = Pharmacy::where("city", $request->city)
-                    ->where("area", $request->area)->get();
-            } else if ($request->has("latt") && $request->has("lang")) {
-                $resault = $this->searchNearstPharmacys($request->lang, $request->latt);
-            } 
+            } else if ($request->has("city_id") && $request->has("area_id")) {
+                $resault = Pharmacy::where("city_id", $request->city_id)
+                    ->where("area_id", $request->area_id)->get();
+            } else if ($request->has("lat") && $request->has("lng")) {
+                $resault = $this->searchNearstPharmacys($request->lng, $request->lat);
+            }
          // fitler the resault with insurance id
          if ($request->delivery == 1 ) {
             $resault = $this->deliveryPharmacyFilter($resault, $request->delivery);
@@ -98,7 +98,7 @@ class PatientPharmacyController extends Controller
     }
 
 
-    
+
    public function deliveryPharmacyFilter($pharmacys, $delivery)
    {
        $filteredPharmacys = [];
@@ -122,7 +122,7 @@ class PatientPharmacyController extends Controller
 
         foreach ($pharmacys as $pharmacy) {
             // calculate distance between current lng lat and lab lng lat
-            $distance = Helper::latLangDistance($lat, $lng, $pharmacy->latt, $pharmacy->lang);
+            $distance = Helper::latLangDistance($lat, $lng, $pharmacy->lat, $pharmacy->lng);
             $pharmacy->distance = $distance;
 
             if ($distance <= $km)
@@ -142,21 +142,21 @@ class PatientPharmacyController extends Controller
 
 
     /**
-     *  create pharmacy order by using latt and lang  in circle .
+     *  create pharmacy order by using lat and lng  in circle .
      *
                 User::query()
-               ->where('name', 'LIKE', "%{$searchTerm}%") 
-               ->orWhere('email', 'LIKE', "%{$searchTerm}%") 
+               ->where('name', 'LIKE', "%{$searchTerm}%")
+               ->orWhere('email', 'LIKE', "%{$searchTerm}%")
                ->get();
      */
 
 
 
     public function createPharmacyOrder(Request $request)
-    {   
-        
+    {
+
           $orderdetails = json_decode($request->orderDetails);
-       
+
         $validator = validator()->make(
             $request->all(),
             [
@@ -174,12 +174,12 @@ class PatientPharmacyController extends Controller
         // chekc if patient login
         if (Patient::where("api_token", $request->api_token)->where("id", $request->patient_id)->count() <= 0)
             return Message::error(Message::$API_LOGIN, null ,Message::$API_LOGIN_EN);
-               
-         
+
+
         // check on patient pharmacy order number
         $messsage = str_replace("n", Settings::find(4)->value, Message::$MAX_ORDER_NUMBER);
         $messsage_en = str_replace("x", Settings::find(4)->value, Message::$MAX_ORDER_NUMBER_EN);
-     
+
          $date = date("Y-m-d");
         $query = DB::select("SELECT count(id) as count FROM `pharmacy_orders` WHERE patient_id =" . $request->patient_id . " and DATE_FORMAT(created_at, '%Y-%m-%d') = '$date'");
         $patientOrderNumber = $query[0]->count;
@@ -194,11 +194,11 @@ class PatientPharmacyController extends Controller
         if ($request->has("orderDetails")) {
             $messsage = str_replace("n", Settings::find(5)->value, Message::$MAX_ORDER__DETAILS_NUMBER);
             $messsage_en = str_replace("x", Settings::find(5)->value, Message::$MAX_ORDER__DETAILS_NUMBER_EN);
-         
+
             if (count($orderdetails) > Settings::find(5)->value)
                 return Message::success($messsage, null ,$messsage_en);
         }
-       
+
 
 
         try {
@@ -209,7 +209,7 @@ class PatientPharmacyController extends Controller
 
             if (!$workingHours)
                 return Message::error(Message::$DAY_OFF, null,Message::$DAY_OFF_EN);
-            
+
             if ($workingHours->active != 1) {
                 return Message::error(Message::$DAY_OFF, null,Message::$DAY_OFF_EN);
             }
@@ -227,7 +227,7 @@ class PatientPharmacyController extends Controller
             $pharmacyOrder->save();
 
 
-            
+
 
               if ($request->has("orderDetails")) {
                 foreach ($orderdetails as $detail) {
@@ -248,31 +248,31 @@ class PatientPharmacyController extends Controller
 
 
 
-  
+
             $message = str_replace("patient", $pharmacyOrder->patient->name, Message::$PHARMACY_NEW__ORDER);
             $message = str_replace("number", $orderNumber, $message);
             $message = str_replace("name", $pharmacyOrder->pharmacy->name, $message);
             $message = str_replace("phone", $pharmacyOrder->pharmacy->phone, $message);
-            
+
             $message_en = str_replace("patient", $pharmacyOrder->patient->name, Message::$PHARMACY_NEW__ORDER_EN);
             $message_en = str_replace("numbers", $orderNumber, $message_en);
             $message_en = str_replace("name", $pharmacyOrder->pharmacy->name, $message_en);
             $message_en = str_replace("phones", $pharmacyOrder->pharmacy->phone, $message_en);
-            
+
             /////notification to patients /////////////////////////
             $title_ar = "   بيانات طلب الصيدليه الخاص بك  ".Patient::find($request->patient_id)->name;
             $title_en = "your order details ".Patient::find($request->patient_id)->name;
             Patient::notify($title_ar,  $title_en,$message,  $message_en, $icon='icon.png',$request->patient_id, $pharmacyOrder->id, "PHARMACY");
 
             ///////////////notification for pharmacy //////
-            
+
             $message_ar_l ="لقد قام   ".Patient::find($request->patient_id)->name." بالحجز لديك و رقم هانفه " .Patient::find($request->patient_id)->phone;
             $message_en_l = "you have new book from ". Patient::find($request->patient_id)->name . "has phone number is" . Patient::find($request->patient_id)->phone ;
             $title_ar_l = "بيانات الطلب ";
             $title_en_l = "Order details";
            Pharmacy::notify($title_ar_l,  $title_en_l,$message_ar_l,  $message_en_l, $icon='icon.png',$request->pharmacy_id, $pharmacyOrder->id);
-         
-          
+
+
             return Message::success($message, null,  $message_en);
         } catch (Exception $ex) {
             return Message::error(Message::$ERROR  . $ex , null ,Message::$ERROR_EN);
