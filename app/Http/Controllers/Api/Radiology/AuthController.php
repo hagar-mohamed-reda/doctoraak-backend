@@ -62,8 +62,8 @@ class AuthController extends Controller
             $user->password =  bcrypt($request->password);
             $user->sms_code = rand(11111,99999);
             $user->active = 0;
-            $user->lang = $request->lang;
-            $user->latt = $request->latt;
+            $user->lng = $request->lng;
+            $user->lat = $request->lat;
             $user->city_id = $request->city_id;
             $user->area_id = $request->area_id;
 
@@ -319,8 +319,8 @@ class AuthController extends Controller
             $user = Radiology::find($request->user_id);
             $user->name = $request->name;
             $user->phone2 = $request->phone2;
-            $user->lang = $request->lang;
-            $user->latt = $request->latt;
+            $user->lng = $request->lng;
+            $user->lat = $request->lat;
             $user->city_id =$request->city_id;
             $user->area_id =$request->area_id;
             $user->delivery = $request->delivery;

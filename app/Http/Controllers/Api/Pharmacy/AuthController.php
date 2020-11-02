@@ -59,8 +59,8 @@ class AuthController extends Controller
                 'city_id' => $request->city_id,
                 'area_id' => $request->area_id,
 
-                'lang' => $request->lang,
-                'latt' => $request->latt,
+                'lng' => $request->lng,
+                'lat' => $request->lat,
                //'address' => $request->address,
                 'delivery' => $request->delivery,
 
@@ -320,8 +320,8 @@ class AuthController extends Controller
             $user = Pharmacy::find($request->user_id);
             $user->name = $request->name;
             $user->phone2 = $request->phone2;
-            $user->lang = $request->lang;
-            $user->latt = $request->latt;
+            $user->lng = $request->lng;
+            $user->lat = $request->lat;
             $user->delivery = $request->delivery;
 
             if ($request->hasFile('photo')) {
