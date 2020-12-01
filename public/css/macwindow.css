@@ -35,7 +35,6 @@
 .mac-window.maximize {
   min-height: 100%;
   min-width: 100%;
-  right: 0px;
   bottom: 0px;
   position: absolute;
   -webkit-transform: translateY(-50%) translateX(-50%) scale(1);
@@ -44,7 +43,7 @@
 .mac-window .title-bar {/*
 border-top-left-radius: 5px;
 border-top-right-radius: 5px;*/
-  background: lightgray; 
+  background: lightgray;
   height: 5%;
   border-bottom: 1px solid #b4b4b4;
   width: 100%;

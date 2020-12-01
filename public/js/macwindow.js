@@ -105,9 +105,9 @@ var MacWindow = (function () {
         this.container.style.width = window.innerWidth + "px";
         this.container.style.height = window.innerHeight + "px";
         this.container.style.position = "fixed";
+        this.container.style.inset = null;
         this.container.style.left = 0;
         this.container.style.top = 0;
-
     };
 
     MacWindow.prototype.close = function () {
