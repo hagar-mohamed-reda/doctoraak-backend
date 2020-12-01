@@ -99,13 +99,13 @@ var MacWindow = (function () {
     };
 
     MacWindow.prototype.maximize = function () {
-        this.container.style.width = null;
-        this.container.style.height = null;
+        this.container.style.width = window.innerWidth;
+        this.container.style.height = window.innerHeight;
 
         $(this.container).toggleClass('maximize');
         $(this.container).removeClass('minimize');
-        this.container.style.left = null;
-        this.container.style.top = null;
+        this.container.style.left = 0;
+        this.container.style.top = 0;
     };
 
     MacWindow.prototype.close = function () {
